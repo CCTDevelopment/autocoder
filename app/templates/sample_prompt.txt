@@ -1,0 +1,1 @@
+Create a simple Flask application with an endpoint that returns "Hello, World!" when accessed.
