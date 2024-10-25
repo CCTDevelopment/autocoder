@@ -1,0 +1,8 @@
+# Ignore Python cache and virtual environments
+__pycache__/
+*.pyc
+.env
+*.env
+venv/
+env/
+generated_code/
