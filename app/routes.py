@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.task_manager import handle_task
+from .task_manager import handle_task  # Relative import
 
 main_blueprint = Blueprint("main", __name__)
 

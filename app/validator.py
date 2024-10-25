@@ -1,12 +1,24 @@
-import subprocess
+import logging
+import openai
+from app.config import Config
 
-def validate_code(file_path):
-    """Run a basic syntax check on the code."""
+openai.api_key = Config.OPENAI_API_KEY
+
+def generate_code(prompt):
+    modified_prompt = f"Write only the code. {prompt}"
     try:
-        result = subprocess.run(["python3", "-m", "py_compile", file_path], capture_output=True, text=True)
-        if result.returncode == 0:
-            return "Syntax OK"
-        else:
-            return f"Syntax Error: {result.stderr}"
-    except Exception as e:
-        return f"Error during validation: {e}"
+        logging.info("Requesting code generation for prompt: %s", prompt)
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "You are a coding assistant that provides only code output."},
+                {"role": "user", "content": modified_prompt}
+            ],
+            max_tokens=150
+        )
+        code = response['choices'][0]['message']['content'].strip()
+        logging.info("Code generation successful for prompt.")
+        return code
+    except openai.error.OpenAIError as e:
+        logging.error("OpenAI API error: %s", e)
+        return None

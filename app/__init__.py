@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app.config import Config
-from app.routes import main_blueprint
+from .config import Config  # Relative import
+from .routes import main_blueprint  # Relative import
 
+# Initialize the SQLAlchemy database instance
 db = SQLAlchemy()
 
 def create_app():

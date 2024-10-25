@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from datetime import datetime
@@ -20,20 +21,6 @@ def sanitize_filename(task_description):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     return f"{base_name}_{timestamp}.py"
 
-def save_code_to_file(file_name, code):
-    try:
-        directory = "generated_code/"
-        os.makedirs(directory, exist_ok=True)
-        file_path = os.path.join(directory, file_name)
-
-        with open(file_path, "w") as f:
-            f.write(code)
-        
-        return file_path
-    except Exception as e:
-        print(f"Error saving file {file_name}: {e}")
-        return None
-
 def decompose_task(prompt):
     if "web app" in prompt.lower():
         return [
@@ -50,20 +37,22 @@ def handle_task(prompt):
 
     for task in tasks:
         try:
+            logging.info("Generating code for task: %s", task["description"])
             code = generate_code(task["description"])
 
             if not code:
-                print(f"Error: Code generation failed for task '{task['description']}'")
+                logging.warning("Code generation returned empty for task '%s'", task["description"])
                 continue
 
             file_path = save_code_to_file(task["file_name"], code)
             
             if file_path:
+                logging.info("Code saved for task '%s' at %s", task["description"], file_path)
                 responses.append({"task": task["description"], "file_path": file_path, "code": code})
             else:
-                print(f"Error: Failed to save code for task '{task['description']}'")
+                logging.error("Failed to save code for task '%s'", task["description"])
         
         except Exception as e:
-            print(f"Error handling task '{task['description']}': {e}")
+            logging.error("Error handling task '%s': %s", task["description"], e)
 
     return {"tasks": tasks, "responses": responses}

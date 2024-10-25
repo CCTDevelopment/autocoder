@@ -1,3 +1,4 @@
+import logging
 import os
 
 def save_code_to_file(file_name, code):
@@ -9,7 +10,8 @@ def save_code_to_file(file_name, code):
         with open(file_path, "w") as f:
             f.write(code)
         
+        logging.info("Code saved to file: %s", file_path)
         return file_path
     except Exception as e:
-        print(f"Error saving file {file_name}: {e}")
+        logging.error("Error saving file %s: %s", file_name, e)
         return None
