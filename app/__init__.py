@@ -1,11 +1,13 @@
 from flask import Flask
-from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from .config import Config
+from .routes import main_blueprint
+
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-
-    from .routes import bp as main_bp
-    app.register_blueprint(main_bp)
-
+    db.init_app(app)
+    app.register_blueprint(main_blueprint)
     return app
