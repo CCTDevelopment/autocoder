@@ -1,5 +1,5 @@
 import openai
-from .config import Config
+from config import Config  # Absolute import
 
 openai.api_key = Config.OPENAI_API_KEY
 

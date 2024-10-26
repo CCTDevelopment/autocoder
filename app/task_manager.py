@@ -1,8 +1,8 @@
 import os
 import re
 from datetime import datetime
-from .code_synthesizer import generate_code
-from .file_manager import save_code_to_file
+from .code_synthesizer import generate_code  # Absolute import
+from .file_manager import save_code_to_file  # Absolute import
 
 def sanitize_filename(task_description):
     task_file_map = {
@@ -17,8 +17,8 @@ def sanitize_filename(task_description):
             return filename
 
     base_name = re.sub(r'\W+', '_', task_description)[:20]
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    return f"{base_name}_{timestamp}.py"
+#    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    return f"{base_name}.py"
 
 def decompose_task(prompt):
     if "web app" in prompt.lower():

@@ -6,8 +6,7 @@ def sanitize_filename(prompt):
     # Replace spaces and special characters with underscores, truncate to 20 characters
     base_name = re.sub(r'\W+', '_', prompt)[:20]
     # Append a timestamp to make it unique
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    return f"{base_name}_{timestamp}.py"
+    return f"{base_name}.py"
 
 def save_code_to_file(prompt, code):
     directory = "generated_code/"
